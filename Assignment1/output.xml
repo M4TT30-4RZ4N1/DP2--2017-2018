@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<virtualnetworkmanager xmlns="http://www.example.com/nfvInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.com/nfvInfo xsd/nfvInfo.xsd">
+    <catalog>
+        <vnft name="MAILCLIENTt" type="MAIL_CLIENT" memory="39" disk="310"/>
+        <vnft name="WEBCLIENTt" type="WEB_CLIENT" memory="53" disk="120"/>
+        <vnft name="MAILSERVERt" type="MAIL_SERVER" memory="410" disk="2600"/>
+        <vnft name="WEBSERVERt" type="WEB_SERVER" memory="530" disk="7100"/>
+        <vnft name="SPAMa" type="SPAM" memory="85" disk="120"/>
+        <vnft name="SPAMb" type="SPAM" memory="56" disk="170"/>
+    </catalog>
+    <nffg name="Nffg3" deployTime="2016-09-28T17:43:20.000+02:00">
+        <node name="WEBSERVERt0Nffg3" vnft="WEBSERVERt"/>
+        <node name="MAILSERVERt1Nffg3" vnft="MAILSERVERt"/>
+        <node name="SPAMb0Nffg3" vnft="SPAMb"/>
+        <node name="MAILCLIENTt0Nffg3" vnft="MAILCLIENTt"/>
+        <link name="Link2" src="WEBSERVERt0Nffg3" dst="SPAMb0Nffg3" throughput="0.0" maxL="0"/>
+        <link name="Link4" src="MAILSERVERt1Nffg3" dst="SPAMb0Nffg3" throughput="0.0" maxL="0"/>
+        <link name="Link1" src="SPAMb0Nffg3" dst="MAILCLIENTt0Nffg3" throughput="0.0" maxL="0"/>
+        <link name="Link3" src="SPAMb0Nffg3" dst="WEBSERVERt0Nffg3" throughput="0.0" maxL="0"/>
+        <link name="Link5" src="SPAMb0Nffg3" dst="MAILSERVERt1Nffg3" throughput="0.0" maxL="0"/>
+        <link name="Link0" src="MAILCLIENTt0Nffg3" dst="SPAMb0Nffg3" throughput="0.0" maxL="0"/>
+    </nffg>
+    <nffg name="Nffg1" deployTime="2016-09-28T19:12:20.000+02:00">
+        <node name="WEBCLIENTt2Nffg1" vnft="WEBCLIENTt"/>
+        <node name="WEBSERVERt0Nffg1" vnft="WEBSERVERt"/>
+        <node name="SPAMa2Nffg1" vnft="SPAMa"/>
+        <node name="SPAMa0Nffg1" vnft="SPAMa"/>
+        <node name="MAILCLIENTt1Nffg1" vnft="MAILCLIENTt"/>
+        <node name="SPAMb3Nffg1" vnft="SPAMb"/>
+        <node name="SPAMa1Nffg1" vnft="SPAMa"/>
+        <node name="SPAMa5Nffg1" vnft="SPAMa"/>
+        <node name="SPAMa4Nffg1" vnft="SPAMa"/>
+        <node name="WEBCLIENTt0Nffg1" vnft="WEBCLIENTt"/>
+        <link name="Link15" src="WEBCLIENTt2Nffg1" dst="SPAMb3Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link14" src="WEBCLIENTt2Nffg1" dst="SPAMa5Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link4" src="WEBCLIENTt2Nffg1" dst="SPAMa2Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link6" src="WEBSERVERt0Nffg1" dst="SPAMa4Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link5" src="SPAMa2Nffg1" dst="WEBCLIENTt2Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link16" src="SPAMa0Nffg1" dst="WEBCLIENTt0Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link13" src="SPAMa0Nffg1" dst="MAILCLIENTt1Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link2" src="MAILCLIENTt1Nffg1" dst="SPAMa1Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link10" src="SPAMb3Nffg1" dst="SPAMa4Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link11" src="SPAMa1Nffg1" dst="SPAMa2Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link1" src="SPAMa1Nffg1" dst="WEBCLIENTt0Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link3" src="SPAMa1Nffg1" dst="MAILCLIENTt1Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link9" src="SPAMa1Nffg1" dst="SPAMb3Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link12" src="SPAMa4Nffg1" dst="SPAMa5Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link17" src="SPAMa4Nffg1" dst="SPAMa2Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link7" src="SPAMa4Nffg1" dst="WEBSERVERt0Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link0" src="WEBCLIENTt0Nffg1" dst="SPAMa1Nffg1" throughput="0.0" maxL="0"/>
+        <link name="Link8" src="WEBCLIENTt0Nffg1" dst="SPAMb3Nffg1" throughput="0.0" maxL="0"/>
+    </nffg>
+    <nffg name="Nffg0" deployTime="2016-09-26T18:48:20.000+02:00">
+        <node name="SPAMb1Nffg0" vnft="SPAMb"/>
+        <node name="SPAMa2Nffg0" vnft="SPAMa"/>
+        <node name="WEBSERVERt0Nffg0" vnft="WEBSERVERt"/>
+        <node name="MAILCLIENTt1Nffg0" vnft="MAILCLIENTt"/>
+        <node name="WEBSERVERt1Nffg0" vnft="WEBSERVERt"/>
+        <node name="SPAMa0Nffg0" vnft="SPAMa"/>
+        <node name="WEBCLIENTt0Nffg0" vnft="WEBCLIENTt"/>
+        <node name="SPAMa3Nffg0" vnft="SPAMa"/>
+        <link name="Link7" src="SPAMb1Nffg0" dst="WEBSERVERt1Nffg0" throughput="0.0" maxL="0"/>
+        <link name="Link9" src="SPAMb1Nffg0" dst="SPAMa3Nffg0" throughput="0.0" maxL="0"/>
+        <link name="Link8" src="SPAMa2Nffg0" dst="WEBSERVERt0Nffg0" throughput="0.0" maxL="0"/>
+        <link name="Link4" src="WEBSERVERt0Nffg0" dst="SPAMa0Nffg0" throughput="0.0" maxL="0"/>
+        <link name="Link2" src="MAILCLIENTt1Nffg0" dst="SPAMa0Nffg0" throughput="0.0" maxL="0"/>
+        <link name="Link6" src="WEBSERVERt1Nffg0" dst="SPAMb1Nffg0" throughput="0.0" maxL="0"/>
+        <link name="Link1" src="SPAMa0Nffg0" dst="WEBCLIENTt0Nffg0" throughput="0.0" maxL="0"/>
+        <link name="Link3" src="SPAMa0Nffg0" dst="MAILCLIENTt1Nffg0" throughput="0.0" maxL="0"/>
+        <link name="Link5" src="SPAMa0Nffg0" dst="WEBSERVERt0Nffg0" throughput="0.0" maxL="0"/>
+        <link name="Link0" src="WEBCLIENTt0Nffg0" dst="SPAMa0Nffg0" throughput="0.0" maxL="0"/>
+    </nffg>
+    <nffg name="Nffg2" deployTime="2016-09-26T13:16:20.000+02:00">
+        <node name="WEBSERVERt0Nffg2" vnft="WEBSERVERt"/>
+        <node name="MAILSERVERt1Nffg2" vnft="MAILSERVERt"/>
+        <node name="WEBSERVERt2Nffg2" vnft="WEBSERVERt"/>
+        <node name="MAILCLIENTt1Nffg2" vnft="MAILCLIENTt"/>
+        <node name="MAILCLIENTt2Nffg2" vnft="MAILCLIENTt"/>
+        <node name="SPAMb0Nffg2" vnft="SPAMb"/>
+        <node name="WEBCLIENTt0Nffg2" vnft="WEBCLIENTt"/>
+        <link name="Link6" src="WEBSERVERt0Nffg2" dst="SPAMb0Nffg2" throughput="0.0" maxL="0"/>
+        <link name="Link8" src="MAILSERVERt1Nffg2" dst="SPAMb0Nffg2" throughput="0.0" maxL="0"/>
+        <link name="Link10" src="WEBSERVERt2Nffg2" dst="SPAMb0Nffg2" throughput="0.0" maxL="0"/>
+        <link name="Link2" src="MAILCLIENTt1Nffg2" dst="SPAMb0Nffg2" throughput="0.0" maxL="0"/>
+        <link name="Link4" src="MAILCLIENTt2Nffg2" dst="SPAMb0Nffg2" throughput="0.0" maxL="0"/>
+        <link name="Link11" src="SPAMb0Nffg2" dst="WEBSERVERt2Nffg2" throughput="0.0" maxL="0"/>
+        <link name="Link1" src="SPAMb0Nffg2" dst="WEBCLIENTt0Nffg2" throughput="0.0" maxL="0"/>
+        <link name="Link3" src="SPAMb0Nffg2" dst="MAILCLIENTt1Nffg2" throughput="0.0" maxL="0"/>
+        <link name="Link5" src="SPAMb0Nffg2" dst="MAILCLIENTt2Nffg2" throughput="0.0" maxL="0"/>
+        <link name="Link7" src="SPAMb0Nffg2" dst="WEBSERVERt0Nffg2" throughput="0.0" maxL="0"/>
+        <link name="Link9" src="SPAMb0Nffg2" dst="MAILSERVERt1Nffg2" throughput="0.0" maxL="0"/>
+        <link name="Link0" src="WEBCLIENTt0Nffg2" dst="SPAMb0Nffg2" throughput="0.0" maxL="0"/>
+    </nffg>
+    <in>
+        <host name="H0" nodes="SPAMa2Nffg0 SPAMa2Nffg1 MAILCLIENTt2Nffg2 SPAMa0Nffg0 WEBCLIENTt2Nffg1 WEBSERVERt0Nffg3 WEBSERVERt0Nffg0 MAILSERVERt1Nffg2 SPAMa0Nffg1 SPAMb0Nffg2 SPAMb0Nffg3 SPAMa4Nffg1 WEBCLIENTt0Nffg1 WEBCLIENTt0Nffg0 WEBCLIENTt0Nffg2" maxVNF="18" disk="68000" memory="6500"/>
+        <host name="H1" nodes="MAILCLIENTt1Nffg0 WEBSERVERt2Nffg2 MAILCLIENTt1Nffg1 SPAMb3Nffg1 MAILCLIENTt1Nffg2 SPAMa5Nffg1 WEBSERVERt1Nffg0 SPAMa3Nffg0 SPAMb1Nffg0 WEBSERVERt0Nffg2 MAILSERVERt1Nffg3 WEBSERVERt0Nffg1 SPAMa1Nffg1 MAILCLIENTt0Nffg3" maxVNF="18" disk="66000" memory="6900"/>
+        <connection h1="H0" h2="H0" throughput="10.29" latency="0"/>
+        <connection h1="H0" h2="H1" throughput="55.25" latency="21"/>
+        <connection h1="H1" h2="H0" throughput="16.24" latency="21"/>
+        <connection h1="H1" h2="H1" throughput="77.51" latency="0"/>
+    </in>
+</virtualnetworkmanager>

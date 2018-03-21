@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." default="build-service" name="NFV-SOL3">
+	<description>
+			Script for NFV Assignment 3 solution - Matteo Arzani s236462
+	</description>
+	
+
+	<property name="basedir" value="." />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="xsd.dir" value="${basedir}/xsd" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="nfvdeployer.dir" value="${src.dir}/it/polito/dp2/NFV/sol3/service/nfvdeployer" />
+	<property name="build.dir" location="${basedir}/build" />
+	<property name="debug" value="true" />
+	<property name="debuglevel" value="source,lines,vars" />
+	<property name="target" value="1.8" />
+	<property name="source" value="1.8" />
+	<property name="neo4j.name" value="Neo4JSimpleXML" />
+	<property name="myWADL" value="${URL}/application.wadl"/>
+	<property name="nfvdeployer.name" value="NfvDeployer" />
+	
+	
+	
+	<!-- Inizialization	-->
+	<target name="init">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${nfvdeployer.dir}" />
+		<echo message="${URL}"> </echo>
+	</target>
+
+	<!-- Building web service -->
+	<target name="build-service" depends="-generate-all-bindings, -generate-neo4j-artifacts">
+		<echo> Building Web Service (start) </echo>
+		<javac 
+			destdir="${build.dir}"
+			debug="${debug}"
+			debuglevel="${debuglevel}"
+			source="${source}"
+			target="${target}"
+			includeantruntime="false">
+				<src path="${src.dir}" />
+				<include name="it/polito/dp2/NFV/sol3/service/**" />
+				<classpath>
+					<path refid="sol.classpath" />
+				</classpath>
+		</javac>
+		<echo>Building Web Service (end)</echo>
+	</target>
+
+	<!-- Check bindings -->
+	<target name="-check-all-bindings">
+		<uptodate property="generate-bindings.notRequired" targetfile="${nfvdeployer.dir}/.flagfile">
+			<srcfiles dir="${xsd.dir}" includes="**/*.xsd" />
+		</uptodate>
+	</target>
+
+	<!-- Clean bindings -->
+	<target name="-clean-all-bindings">
+		<delete dir="${nfvdeployer.dir}" />
+	</target>
+
+	<!-- Generate bindings -->
+	<target name="-generate-all-bindings" unless="generate-bindings.notRequired" depends="-check-all-bindings, init" description="Generate bindings from schema">
+		<exec executable="xjc" failonerror="true" >
+			<arg value="-d" />
+			<arg value="${src.dir}" />
+			<arg value="-p" />
+			<arg value="it.polito.dp2.NFV.sol3.service.nfvdeployer" />
+			<arg value="-encoding" />
+			<arg value="utf8" />
+			<arg value="${xsd.dir}/NfvDeployer.xsd" />
+		</exec>
+		<touch file="${nfvdeployer.dir}/.flagfile" />
+	</target>
+
+	<!-- ClassPath of solution -->
+	<path id="sol.classpath">
+		<fileset dir="${lib.dir}" includes="*.jar" />
+		<fileset dir="${ext.lib.dir}" includes="*.jar" excludes="ant-*" />
+		<fileset dir="${ext.lib.dir}" includes="javax.ws.rs-api-2.1.jar" />
+	</path>
+	
+	<!-- Create task type named "wjc" as Assignment 2 -->
+	<taskdef name="wjc" classname="org.jvnet.ws.wadl2java.WJCTask">
+		<classpath>
+			<fileset dir="${ext.lib.dir}" includes="*.jar" />
+		</classpath>
+	</taskdef>
+	
+	<!-- Generate Neo4j artifacts -->
+	<target name="-generate-neo4j-artifacts">
+		<mkdir dir="${src.dir}" />
+		<echo message="Generating Neo4j artifacts for the service..." />
+		<wjc description="${Neo4JSimpleXMLWADL}" package="it.polito.dp2.NFV.sol3.service.neo4j" autoSchemaPackage="false" target="${src.dir}">
+			<customizations dir="${basedir}" includes="binding.xjc" />
+			<produces dir="${src.dir}/it/polito/dp2/NFV/sol3/service/neo4j" includes="*.java" />
+			<depends dir="${basedir}" includes="build.xml" />
+			<customClassName uri="${Neo4JSimpleXMLURL}/" classname="${neo4j.name}" />
+		</wjc>
+	</target>
+	
+	<!-- Generating client1 artifacts (from NfvDeployer.xsd) -->
+	<target name="generate-clients-artifacts">
+		<mkdir dir="${src.dir}" />
+		<echo message="Generating Schema artifacts for the client1 and the client2..." />
+		<wjc description="${myWADL}" package="it.polito.dp2.NFV.sol3.client1.nfvdeployer" autoSchemaPackage="false" target="${src.dir}">
+			<customizations dir="${basedir}" includes="binding.xjc" />
+			<produces dir="${src.dir}/it/polito/dp2/NFV/sol3/client1/nfvdeployer" includes="*.java" />
+			<depends dir="${basedir}" includes="build.xml" />
+			<customClassName uri="${URL}/" classname="${nfvdeployer.name}" />
+		</wjc>
+				
+	<!-- Generating client2 artifacts (from NfvDeployer.xsd) -->
+		<wjc description="${myWADL}" package="it.polito.dp2.NFV.sol3.client2.nfvdeployer" autoSchemaPackage="false" target="${src.dir}">
+			<customizations dir="${basedir}" includes="binding.xjc" />
+			<produces dir="${src.dir}/it/polito/dp2/NFV/sol3/client2/nfvdeployer" includes="*.java" />
+			<depends dir="${basedir}" includes="build.xml" />
+			<customClassName uri="${URL}/" classname="${nfvdeployer.name}" />
+		</wjc>
+	</target>
+	
+	
+	
+	<!-- building client1 and client2 -->
+	<target name="build-client" depends="generate-clients-artifacts">
+		<echo>Building client1 and client2 (start)</echo>
+		<javac 
+			destdir="${build.dir}"
+			debug="${debug}"
+			debuglevel="${debuglevel}"
+			source="${source}"
+			target="${target}"
+			includeantruntime="false">
+				<src path="${src.dir}" />
+				<include name="it/polito/dp2/NFV/sol3/client1/**" />
+				<include name="it/polito/dp2/NFV/sol3/client2/**" />
+				<classpath>
+					<path refid="sol.classpath" />
+				</classpath>
+		</javac>
+		<echo>Building client1 and client2 (end)</echo>
+	</target>
+
+
+
+</project>

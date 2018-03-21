@@ -1,0 +1,33 @@
+(DTD vs XML Schema)
+Summary:
+
+1. XML Schema is namespace aware, while DTD is not.
+2. XML Schemas are written in XML, while DTDs are not.
+3. XML Schema is strongly typed, while DTD is not.
+4. XML Schema has a wealth of derived and built-in data types that are not available in DTD.
+5. XML Schema does not allow inline definitions, while DTD does.
+
+Using the DTD there are some limitations on the description of attribute types and multiplicity.
+The Xml Schema allow:
+	- to create more precise attributes
+	- to create group attributes in case of reuse
+	- to create key/keyrefs
+	
+(Brief Description of Structural Choise)
+Refering the Xml Schema: 
+the virtualnetworkmanager is the root element, it contains 
+	- nffg (from 0 to N)
+	- catalog (only one)
+	- in (only one)
+each nffg contains:
+	- node (from 1 to N)
+	- link (from 0 to N)
+each catalog contains:
+	- vnft (from 1 to N)
+each in contains:
+	- host (from 1 to N)
+	- connection (from 0 to N)
+
+The measures of  latency, memory and storage are NonNegativeIntegers.
+Atributes are grouped in attributeGroup, for reuse reasons.
+The throughput measure is a double restricted to positive values.

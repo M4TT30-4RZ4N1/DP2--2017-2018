@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This XSD file was developed by Matteo Arzani for the Assignment 3a-b 
+	of the course Distributed Programming II in Politechnic University of Turin. -->
+
+<schema 
+targetNamespace="http://www.example.com/nfvdeployer"
+xmlns="http://www.w3.org/2001/XMLSchema" 
+xmlns:nfv="http://www.example.com/nfvdeployer">
+
+	<!-- the old virtual network manager from Assignment 1 -->
+	<element name="RNfv">
+		<complexType>
+			<all>
+				<element name="RNffgs" maxOccurs="1" minOccurs="1"
+					type="nfv:Reference" />
+				<element name="RVnfts" maxOccurs="1" minOccurs="1"
+					type="nfv:Reference" />
+				<element name="RHosts" maxOccurs="1" minOccurs="1"
+					type="nfv:Reference" />
+			</all>
+		</complexType>
+	</element>
+	
+	<!--  Nffgs contains contains nffg -->
+	<element name="RNffgs">
+		<complexType>
+			<sequence>
+				<element name="RNffgs" maxOccurs="unbounded" minOccurs="0"
+					type="nfv:ResourceName" />
+			</sequence>
+		</complexType>
+		<!-- each nffg has a unique name -->
+		<key name="RNffgKey">
+			<selector xpath="RNffg" />
+			<field xpath="@name" />
+		</key>
+	</element>
+	
+	<!-- basic nffg -->
+	<element name="RNffg">
+		<complexType>
+			<complexContent>
+				<extension base="nfv:ResourceName">
+					<sequence>
+						<element name="deployTime" type="dateTime" />
+						<element name="RNodes" type="nfv:Reference" />
+						<element name="RLinks" type="nfv:Reference" />
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+	
+	<!--  new structure used -->
+		<element name="newRnffg">
+		<complexType>
+			<sequence>
+				<element name="RNodes">
+					<complexType>
+						<sequence>
+							<element name="RNode" maxOccurs="unbounded" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="RVnft" type="token" maxOccurs="1"
+											minOccurs="1">
+										</element>
+										<element name="ownerHost" type="token" maxOccurs="1"
+											minOccurs="0">
+										</element>
+									</sequence>
+									<attribute name="name" type="token" use="required">
+									</attribute>
+								</complexType>
+							</element>
+						</sequence>
+					</complexType>
+					<key name="newRnffgNodeKey">
+						<selector xpath="RNode" />
+						<field xpath="@name" />
+					</key>
+				</element>
+				<element name="RLinks">
+					<complexType>
+						<sequence>
+							<element name="RLink" maxOccurs="unbounded" minOccurs="0">
+								<complexType>
+									<sequence>
+										<element name="srcNode" type="token" maxOccurs="1"
+											minOccurs="1">
+										</element>
+										<element name="dstNode" type="token"
+											maxOccurs="1" minOccurs="1">
+										</element>
+									</sequence>
+									<attribute name="name" type="token" use="required">
+									</attribute>
+
+									<attribute name="maxL" type="nonNegativeInteger"
+										use="optional" default="0" />
+									<attribute name="minT" type="nfv:nonNegativeFloat"
+										use="optional" default="0" />
+								</complexType>
+							</element>
+						</sequence>
+					</complexType>
+					<key name="newRnffgLinkKey">
+						<selector xpath="RLink" />
+						<field xpath="@name" />
+					</key>
+				</element>
+			</sequence>
+			<attribute name="name" type="string"></attribute>
+		</complexType>
+
+	</element>
+	
+	
+
+	<!-- Nodes contains node -->
+	<element name="RNodes">
+		<complexType>
+			<sequence>
+				<element name="RNodes" minOccurs="0" maxOccurs="unbounded"
+					type="nfv:ResourceName" />
+			</sequence>
+		</complexType>
+	<!-- each node name is unique inside an nffg -->
+		<key name="RnodeKey">
+			<selector xpath="RNode" />
+			<field xpath="@name" />
+		</key>
+	</element>
+	
+	<!-- basic node -->
+	<element name="RNode">
+		<complexType>
+			<complexContent>
+				<extension base="nfv:ResourceName">
+					<sequence>
+						<element name="RHost" type="nfv:ResourceName" maxOccurs="1"
+							minOccurs="0" />
+						<element name="RVnft" type="nfv:ResourceName" />
+						<element name="RNffg" type="nfv:ResourceName"></element>
+						<element name="reachableHosts" type="nfv:Reference" />
+						<element name="RLinks" type="nfv:Reference" />
+					</sequence>
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+
+	<element name="RLinks">
+		<complexType>
+			<sequence>
+				<element ref="nfv:RLink" minOccurs="0" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="RLink">
+		<complexType>
+			<complexContent>
+				<extension base="nfv:RLinkageName">
+					<attribute name="maxL" type="nonNegativeInteger" />
+					<attribute name="minT" type="nfv:nonNegativeFloat" />
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<!--  Vnfts contains  vnft -->
+	<element name="RVnfts">
+		<complexType>
+			<sequence>
+				<element ref="nfv:RVnft" minOccurs="0" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+		<!-- Each vnft has a unique name inside the catalog (as Assignment 1 is vnfts) -->
+		<key name="RvnftKey">
+			<selector xpath="RVnft" />
+			<field xpath="@name" />
+		</key>
+	</element>
+	
+	<!-- basic vnft  -->
+	<element name="RVnft">
+		<complexType>
+			<complexContent>
+				<extension base="nfv:ResourceName">
+					<attribute name="vnftype" type="nfv:RVnftType"
+						use="required" />
+					<attribute name="memory" type="nonNegativeInteger"
+						use="required" />
+					<attribute name="storage" type="nonNegativeInteger"
+						use="required" />					
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+
+	<!-- RHosts contains RHost -->
+	<element name="RHosts">
+		<complexType>
+			<sequence>
+				<element name="RHosts" type="nfv:ResourceName" minOccurs="0"
+					maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+		<key name="hostKey">
+			<selector xpath="RHost" />
+			<field xpath="@name" />
+		</key>
+	</element>
+	<!-- basic host -->
+	<element name="RHost">
+		<complexType>
+			<complexContent>
+				<extension base="nfv:ResourceName">
+					<sequence>
+					
+						<element name="deployedNodes">
+							<complexType>
+								<sequence>
+									<element name="RNodes" minOccurs="0" maxOccurs="unbounded"
+										type="nfv:ResourceName">
+									</element>
+								</sequence>
+							</complexType>
+						</element>
+
+						<element name="RConnections" type="nfv:Reference" />
+					</sequence>
+					<attribute name="memory" type="nonNegativeInteger"
+						use="required" />
+					<attribute name="storage" type="nonNegativeInteger"
+						use="required" />
+					<attribute name="maxRvnfts" type="nonNegativeInteger" use="required" />
+				</extension>
+			</complexContent>
+		</complexType>
+	</element>
+	
+	<element name="RConnections">
+		<complexType>
+			<sequence>
+				<element name="RConnections" type="nfv:RConnection" maxOccurs="unbounded"
+					minOccurs="0" />
+			</sequence>
+		</complexType>
+	</element>
+	
+	<!-- a connections contain two host H1 and H2 represented from linkage-->
+	<complexType name="RConnection">
+		<complexContent>
+			<extension base="nfv:RLinkage">
+				<attribute name="maxL" type="nonNegativeInteger" use="required" />
+				<attribute name="minT" type="nfv:nonNegativeFloat"
+					use="required" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<!--  relation between two host or two node -->
+	<complexType name="RLinkage">
+		<complexContent>
+			<extension base="nfv:Reference">
+				<attribute name="src" type="token" use="required" />
+				<attribute name="dst" type="token" use="required" />
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<!-- will extend the linkage giving a name -->
+	<complexType name="RLinkageName">
+		<complexContent>
+			<extension base="nfv:RLinkage">
+				<attribute name="name" type="token" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<!-- Data structures used -->
+	
+	<!-- for float values -->
+	<simpleType name="nonNegativeFloat">
+		<restriction base="float">
+			<minInclusive value="0" />
+		</restriction>
+	</simpleType>
+	
+	<!-- From Assignment 1 -->
+	<simpleType name="RVnftType">
+		<restriction base="string">
+			<enumeration value="CACHE" />
+			<enumeration value="DPI" />			
+			<enumeration value="FW" />
+			<enumeration value="MAIL_CLIENT" />
+			<enumeration value="MAIL_SERVER" />			
+			<enumeration value="NAT" />
+			<enumeration value="SPAM" />
+			<enumeration value="VPN" />
+			<enumeration value="WEB_CLIENT" />
+			<enumeration value="WEB_SERVER" />			
+		</restriction>
+	</simpleType>
+	
+	<!-- define a generic reference to another resource -->
+	<complexType name="Reference">
+		<attribute name="reference" type="anyURI" use="required" />
+	</complexType>
+	
+	<!-- each resource name is a reference to another and also an simple name attribute -->
+	<complexType name="ResourceName">
+		<complexContent>
+			<extension base="nfv:Reference">
+				<attribute name="name" type="token" use="required" />
+			</extension>
+		</complexContent>
+	</complexType>
+	
+</schema>

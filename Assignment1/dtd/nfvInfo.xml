@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE virtualnetworkmanager SYSTEM "nfvInfo.dtd">
+
+<virtualnetworkmanager>
+
+	<catalog>
+
+		<vnft name="WebClient_1" type="WebClient" memory="1024" disk="5120"></vnft>
+		<vnft name="NAT_1" type="NAT" memory="6144" disk="8192"></vnft>
+		<vnft name="Firewall_1" type="Firewall" memory="6144" disk="8192"></vnft>
+		<vnft name="WebServer_1" type="WebServer" memory="8192" disk="10240"></vnft>
+
+	</catalog>
+
+	<nffg name="nffg_1" deployTime="2002-05-30T09:00:00">
+
+		<node name="node_1" vnft="WebClient_1"></node>
+		<node name="node_2" vnft="NAT_1"></node>
+		<node name="node_3" vnft="Firewall_1"></node>
+		<node name="node_4" vnft="WebServer_1"></node>
+
+		<link name="link_12" nodeSrc="node_1" nodeDst="node_2" minT="4"
+			maxL="10"></link>
+		<link name="link_21" nodeSrc="node_2" nodeDst="node_1" minT="2"
+			maxL="9"></link>
+		<link name="link_23" nodeSrc="node_2" nodeDst="node_3" minT="1"
+			maxL="8"></link>
+		<link name="link_32" nodeSrc="node_3" nodeDst="node_2" minT="2"
+			maxL="10"></link>
+		<link name="link_34" nodeSrc="node_3" nodeDst="node_4" minT="4"
+			maxL="7"></link>
+		<link name="link_43" nodeSrc="node_4" nodeDst="node_3" minT="4"
+			maxL="8"></link>
+
+	</nffg>
+
+	<in>
+
+		<host name="host_1" maxVNF="3" memory="16384" disk="51200" nodes="node_1"></host>
+		<host name="host_2" maxVNF="2" memory="16384" disk="51200" nodes="node_2"></host>
+		<host name="host_3" maxVNF="2" memory="16384" disk="51200" nodes="node_3"></host>
+		<host name="host_4" maxVNF="3" memory="16384" disk="51200" nodes="node_4"></host>
+
+		<connection h1="host_1" h2="host_2" minT="3" maxL="8"></connection>
+		<connection h1="host_2" h2="host_3" minT="3" maxL="8"></connection>
+		<connection h1="host_3" h2="host_4" minT="2" maxL="9"></connection>
+
+	</in>
+
+
+</virtualnetworkmanager>
+
+<!-- This XML file was developed by Matteo Arzani for the Assignment 1 of 
+	the course Distributed Programming II 2017/2018 in Politechnic University 
+	of Turin. -->

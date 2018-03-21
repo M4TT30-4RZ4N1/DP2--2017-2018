@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<virtualnetworkmanager xmlns="http://www.example.com/nfvInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.com/nfvInfo xsd/nfvInfo.xsd">
+    <catalog>
+        <vnft name="MAILCLIENTt" type="MAIL_CLIENT" memory="22" disk="490"/>
+        <vnft name="WEBCLIENTt" type="WEB_CLIENT" memory="42" disk="370"/>
+        <vnft name="MAILSERVERt" type="MAIL_SERVER" memory="720" disk="3000"/>
+        <vnft name="WEBSERVERt" type="WEB_SERVER" memory="310" disk="9800"/>
+        <vnft name="FWa" type="FW" memory="30" disk="190"/>
+        <vnft name="SPAMb" type="SPAM" memory="82" disk="660"/>
+        <vnft name="NATc" type="NAT" memory="53" disk="660"/>
+        <vnft name="SPAMd" type="SPAM" memory="99" disk="90"/>
+    </catalog>
+    <nffg name="Nffg2" deployTime="2016-09-28T06:44:20.000+02:00">
+        <node name="SPAMd0Nffg2" vnft="SPAMd"/>
+        <node name="MAILSERVERt1Nffg2" vnft="MAILSERVERt"/>
+        <node name="SPAMb2Nffg2" vnft="SPAMb"/>
+        <node name="FWa4Nffg2" vnft="FWa"/>
+        <node name="MAILCLIENTt1Nffg2" vnft="MAILCLIENTt"/>
+        <node name="MAILSERVERt2Nffg2" vnft="MAILSERVERt"/>
+        <node name="WEBSERVERt4Nffg2" vnft="WEBSERVERt"/>
+        <node name="MAILSERVERt3Nffg2" vnft="MAILSERVERt"/>
+        <node name="FWa3Nffg2" vnft="FWa"/>
+        <node name="MAILSERVERt0Nffg2" vnft="MAILSERVERt"/>
+        <node name="NATc1Nffg2" vnft="NATc"/>
+        <node name="WEBCLIENTt0Nffg2" vnft="WEBCLIENTt"/>
+    </nffg>
+    <nffg name="Nffg3" deployTime="2016-09-28T15:39:20.000+02:00">
+        <node name="MAILSERVERt2Nffg3" vnft="MAILSERVERt"/>
+        <node name="SPAMb2Nffg3" vnft="SPAMb"/>
+        <node name="FWa0Nffg3" vnft="FWa"/>
+        <node name="MAILCLIENTt1Nffg3" vnft="MAILCLIENTt"/>
+        <node name="NATc3Nffg3" vnft="NATc"/>
+        <node name="WEBSERVERt4Nffg3" vnft="WEBSERVERt"/>
+        <node name="FWa9Nffg3" vnft="FWa"/>
+        <node name="NATc6Nffg3" vnft="NATc"/>
+        <node name="SPAMb7Nffg3" vnft="SPAMb"/>
+        <node name="MAILSERVERt1Nffg3" vnft="MAILSERVERt"/>
+        <node name="SPAMb4Nffg3" vnft="SPAMb"/>
+        <node name="MAILSERVERt0Nffg3" vnft="MAILSERVERt"/>
+        <node name="MAILSERVERt3Nffg3" vnft="MAILSERVERt"/>
+        <node name="SPAMb8Nffg3" vnft="SPAMb"/>
+        <node name="MAILCLIENTt0Nffg3" vnft="MAILCLIENTt"/>
+        <node name="SPAMb5Nffg3" vnft="SPAMb"/>
+        <node name="SPAMd1Nffg3" vnft="SPAMd"/>
+    </nffg>
+    <nffg name="Nffg1" deployTime="2016-09-26T17:48:20.000+02:00">
+        <node name="FWa4Nffg1" vnft="FWa"/>
+        <node name="NATc0Nffg1" vnft="NATc"/>
+        <node name="NATc3Nffg1" vnft="NATc"/>
+        <node name="NATc9Nffg1" vnft="NATc"/>
+        <node name="MAILSERVERt1Nffg1" vnft="MAILSERVERt"/>
+        <node name="FWa2Nffg1" vnft="FWa"/>
+        <node name="WEBSERVERt0Nffg1" vnft="WEBSERVERt"/>
+        <node name="SPAMd8Nffg1" vnft="SPAMd"/>
+        <node name="SPAMd1Nffg1" vnft="SPAMd"/>
+        <node name="MAILCLIENTt0Nffg1" vnft="MAILCLIENTt"/>
+        <node name="SPAMb5Nffg1" vnft="SPAMb"/>
+        <node name="SPAMd6Nffg1" vnft="SPAMd"/>
+        <node name="FWa7Nffg1" vnft="FWa"/>
+    </nffg>
+    <nffg name="Nffg4" deployTime="2016-09-26T18:38:20.000+02:00">
+        <node name="WEBCLIENTt0Nffg4" vnft="WEBCLIENTt"/>
+        <node name="NATc0Nffg4" vnft="NATc"/>
+        <node name="WEBCLIENTt1Nffg4" vnft="WEBCLIENTt"/>
+        <node name="MAILCLIENTt2Nffg4" vnft="MAILCLIENTt"/>
+    </nffg>
+    <nffg name="Nffg0" deployTime="2016-09-28T09:27:20.000+02:00">
+        <node name="WEBSERVERt3Nffg0" vnft="WEBSERVERt"/>
+        <node name="SPAMb3Nffg0" vnft="SPAMb"/>
+        <node name="FWa1Nffg0" vnft="FWa"/>
+        <node name="WEBSERVERt1Nffg0" vnft="WEBSERVERt"/>
+        <node name="MAILSERVERt2Nffg0" vnft="MAILSERVERt"/>
+        <node name="WEBSERVERt4Nffg0" vnft="WEBSERVERt"/>
+        <node name="SPAMb2Nffg0" vnft="SPAMb"/>
+        <node name="FWa0Nffg0" vnft="FWa"/>
+        <node name="MAILSERVERt0Nffg0" vnft="MAILSERVERt"/>
+        <node name="WEBCLIENTt0Nffg0" vnft="WEBCLIENTt"/>
+        <node name="WEBCLIENTt1Nffg0" vnft="WEBCLIENTt"/>
+    </nffg>
+    <in>
+        <host name="H0" nodes="SPAMb7Nffg3 WEBSERVERt3Nffg0 SPAMb3Nffg0 FWa4Nffg2 SPAMb2Nffg3 MAILCLIENTt1Nffg2 WEBSERVERt4Nffg2 SPAMd1Nffg1 WEBSERVERt4Nffg3 MAILCLIENTt2Nffg4 WEBCLIENTt0Nffg0 SPAMd6Nffg1" maxVNF="17" disk="90000" memory="1700"/>
+        <host name="H1" nodes="FWa2Nffg1 SPAMd0Nffg2 NATc0Nffg4 MAILSERVERt2Nffg3 NATc3Nffg3 WEBSERVERt4Nffg0 SPAMb8Nffg3 MAILCLIENTt0Nffg3 WEBCLIENTt1Nffg0 MAILCLIENTt0Nffg1 MAILSERVERt0Nffg2 FWa7Nffg1" maxVNF="17" disk="66000" memory="2200"/>
+        <host name="H2" nodes="MAILCLIENTt1Nffg3 NATc3Nffg1 FWa9Nffg3 FWa0Nffg0 NATc1Nffg2 SPAMb4Nffg3 WEBSERVERt0Nffg1 MAILSERVERt1Nffg2 SPAMd8Nffg1 MAILSERVERt3Nffg3 MAILSERVERt0Nffg0" maxVNF="15" disk="30000" memory="7500"/>
+        <host name="H3" nodes="MAILSERVERt1Nffg1 FWa4Nffg1 FWa0Nffg3 FWa1Nffg0 WEBSERVERt1Nffg0 NATc9Nffg1" maxVNF="8" disk="57000" memory="1200"/>
+        <host name="H4" nodes="WEBCLIENTt0Nffg4 SPAMb2Nffg2 NATc0Nffg1 MAILSERVERt2Nffg2 WEBCLIENTt1Nffg4 NATc6Nffg3 FWa3Nffg2 MAILSERVERt1Nffg3 MAILSERVERt2Nffg0 MAILSERVERt0Nffg3 SPAMb2Nffg0 MAILSERVERt3Nffg2 SPAMb5Nffg3 SPAMb5Nffg1 WEBCLIENTt0Nffg2 SPAMd1Nffg3" maxVNF="17" disk="22000" memory="9500"/>
+        <connection h1="H0" h2="H0" throughput="8.0" latency="0"/>
+        <connection h1="H0" h2="H1" throughput="42.92" latency="74"/>
+        <connection h1="H0" h2="H2" throughput="31.2" latency="60"/>
+        <connection h1="H0" h2="H3" throughput="79.31" latency="86"/>
+        <connection h1="H0" h2="H4" throughput="52.63" latency="64"/>
+        <connection h1="H1" h2="H0" throughput="5.47" latency="74"/>
+        <connection h1="H1" h2="H1" throughput="62.15" latency="0"/>
+        <connection h1="H1" h2="H2" throughput="91.06" latency="15"/>
+        <connection h1="H1" h2="H3" throughput="59.89" latency="13"/>
+        <connection h1="H1" h2="H4" throughput="6.07" latency="14"/>
+        <connection h1="H2" h2="H0" throughput="44.36" latency="60"/>
+        <connection h1="H2" h2="H1" throughput="78.58" latency="15"/>
+        <connection h1="H2" h2="H2" throughput="81.91" latency="0"/>
+        <connection h1="H2" h2="H3" throughput="24.67" latency="27"/>
+        <connection h1="H2" h2="H4" throughput="44.1" latency="12"/>
+        <connection h1="H3" h2="H0" throughput="60.0" latency="86"/>
+        <connection h1="H3" h2="H1" throughput="35.19" latency="13"/>
+        <connection h1="H3" h2="H2" throughput="13.53" latency="27"/>
+        <connection h1="H3" h2="H3" throughput="24.93" latency="0"/>
+        <connection h1="H3" h2="H4" throughput="46.77" latency="27"/>
+        <connection h1="H4" h2="H0" throughput="62.57" latency="64"/>
+        <connection h1="H4" h2="H1" throughput="59.73" latency="14"/>
+        <connection h1="H4" h2="H2" throughput="12.4" latency="12"/>
+        <connection h1="H4" h2="H3" throughput="99.75" latency="27"/>
+        <connection h1="H4" h2="H4" throughput="24.09" latency="0"/>
+    </in>
+</virtualnetworkmanager>

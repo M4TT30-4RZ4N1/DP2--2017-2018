@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<nfv:virtualnetworkmanager xmlns:nfv="http://www.example.com/nfvInfo"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.example.com/nfvInfo nfvInfo.xsd">
+
+	<nfv:catalog>
+		<nfv:vnft name="WebClient_1" type="WebClient" memory="1024"
+			disk="5120" />
+		<nfv:vnft name="NAT_1" type="NAT" memory="6144" disk="8192" />
+		<nfv:vnft name="Firewall_1" type="Firewall" memory="6144"
+			disk="8192" />
+		<nfv:vnft name="WebServer_1" type="WebServer" memory="8192"
+			disk="10240" />
+	</nfv:catalog>
+
+
+	<nfv:nffg name="nffg_1" deployTime="2002-05-30T09:00:00">
+
+		<nfv:node name="node_1" vnft="WebClient_1" />
+		<nfv:node name="node_2" vnft="NAT_1" />
+		<nfv:node name="node_3" vnft="Firewall_1" />
+		<nfv:node name="node_4" vnft="WebServer_1" />
+
+		<nfv:link name="link_12" src="node_1" dst="node_2" throughput="4"
+			maxL="10" />
+		<nfv:link name="link_21" src="node_2" dst="node_1" throughput="2"
+			maxL="9" />
+		<nfv:link name="link_23" src="node_2" dst="node_3" throughput="1"
+			maxL="8" />
+		<nfv:link name="link_32" src="node_3" dst="node_2" throughput="2"
+			maxL="10" />
+		<nfv:link name="link_34" src="node_3" dst="node_4" throughput="4"
+			maxL="7" />
+		<nfv:link name="link_43" src="node_4" dst="node_3" throughput="4"
+			maxL="8" />
+
+	</nfv:nffg>
+
+	<nfv:in>
+	
+		<nfv:host name="host_1" maxVNF="3" disk="51200" memory="16384"
+			nodes="node_1" />
+		<nfv:host name="host_2" maxVNF="2" disk="51200" memory="16384"
+			nodes="node_2" />
+		<nfv:host name="host_3" maxVNF="2" disk="51200" memory="16384"
+			nodes="node_3" />
+		<nfv:host name="host_4" maxVNF="3" disk="51200" memory="16384"
+			nodes="node_4" />
+
+		<nfv:connection h2="host_1" h1="host_2" throughput="3"
+			latency="8" />
+		<nfv:connection h2="host_2" h1="host_3" throughput="3"
+			latency="8" />
+		<nfv:connection h2="host_3" h1="host_4" throughput="2"
+			latency="9" />
+	</nfv:in>
+
+
+</nfv:virtualnetworkmanager>
+
+
+<!-- This XML file was developed by Matteo Arzani for the Assignment 1 of 
+	the course Distributed Programming II 2017/2018 in Politechnic University 
+	of Turin. -->

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema targetNamespace="http://www.example.com/nfvInfo"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:nfv="http://www.example.com/nfvInfo"
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0"
+	elementFormDefault="unqualified">
+
+
+	<xsd:annotation>
+		<xsd:documentation>
+			VirtualNetworkManager schema for Assignment 1 of the course Distributed Programming II
+			2017/2018 in Politechnic University of Turin.
+			This XML Schema file was developed by Matteo Arzani.
+		</xsd:documentation>
+	</xsd:annotation>
+
+	<!-- definition of simple elements -->
+
+	<!-- definition of basic attributes -->	
+	<xsd:attributeGroup name="deployTimeGroup">
+		<xsd:attribute name="deployTime" type="xsd:dateTime"
+			use="required" />
+	</xsd:attributeGroup>
+
+	<xsd:attributeGroup name="memoryGroup">
+		<xsd:attribute name="memory" type="xsd:nonNegativeInteger"
+			use="required" />
+	</xsd:attributeGroup>
+
+	<xsd:attributeGroup name="diskGroup">
+		<xsd:attribute name="disk" type="xsd:nonNegativeInteger"
+			use="required" />
+	</xsd:attributeGroup>
+	
+	<xsd:attributeGroup name="maxLGroup">
+		<xsd:attribute name="maxL" type="xsd:nonNegativeInteger"
+			use="optional" />
+	</xsd:attributeGroup>
+
+	<xsd:attributeGroup name="avglatencyGroup">
+		<xsd:attribute name="latency" type="xsd:nonNegativeInteger"
+			use="required" />
+	</xsd:attributeGroup>
+
+	<xsd:attributeGroup name="maxVNFGroup">
+		<xsd:attribute name="maxVNF" type="xsd:nonNegativeInteger"
+			use="required" />
+	</xsd:attributeGroup>
+
+
+	<!-- definition of root -->
+	<xsd:element name="virtualnetworkmanager">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="nfv:catalog" minOccurs="1" maxOccurs="1">
+				</xsd:element>
+				<xsd:element ref="nfv:nffg" minOccurs="0" maxOccurs="unbounded">
+				</xsd:element>
+				<xsd:element ref="nfv:in" minOccurs="1" maxOccurs="1">
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+
+		<!-- Each nffg has a unique @name (root) ! -->
+		<xsd:key name="nffg_key">
+			<xsd:selector xpath="nfv:nffg"></xsd:selector>
+			<xsd:field xpath="@name"></xsd:field>
+		</xsd:key>
+
+		<!-- Each node has a unique @name (root) ! -->
+		<xsd:key name="node_key">
+			<xsd:selector xpath="nfv:nffg/nfv:node"></xsd:selector>
+			<xsd:field xpath="@name"></xsd:field>
+		</xsd:key>
+				
+		<!-- Each link reference to two nodes -->
+		<xsd:keyref name="node_key_ref1" refer="nfv:node_key">
+			<xsd:selector xpath="nfv:nffg/nfv:link"></xsd:selector>
+			<xsd:field xpath="@src"></xsd:field>
+		</xsd:keyref>
+
+		<xsd:keyref name="node_key_ref2" refer="nfv:node_key">
+			<xsd:selector xpath="nfv:nffg/nfv:link"></xsd:selector>
+			<xsd:field xpath="@dst"></xsd:field>
+		</xsd:keyref>
+		
+		<!-- Each vnft has a unique @name ! inside the catalog -->
+		<xsd:key name="vnft_key">
+			<xsd:selector xpath="nfv:catalog/nfv:vnft"></xsd:selector>
+			<xsd:field xpath="@name"></xsd:field>
+		</xsd:key>
+		
+		<!-- Each node reference to a specific vnft -->
+		<xsd:keyref name="vnft_key_ref" refer="nfv:vnft_key">
+			<xsd:selector xpath="nfv:nffg/nfv:node"></xsd:selector>
+			<xsd:field xpath="@vnft"></xsd:field>
+		</xsd:keyref>
+							
+	</xsd:element>
+
+	<!-- Definition of other virtual elements -->
+
+	<xsd:element name="catalog">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="nfv:vnft" minOccurs="1" maxOccurs="unbounded">
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+							
+	</xsd:element>
+
+	<xsd:element name="vnft">
+		<xsd:complexType>
+			<xsd:attribute name="name" type="xsd:token" use="required"></xsd:attribute>
+			<xsd:attribute name="type" type="xsd:string" use="required"></xsd:attribute>
+			<xsd:attributeGroup ref="nfv:memoryGroup"></xsd:attributeGroup>
+			<xsd:attributeGroup ref="nfv:diskGroup"></xsd:attributeGroup>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="nffg">
+
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="nfv:node" minOccurs="1" maxOccurs="unbounded">
+				</xsd:element>
+				<xsd:element ref="nfv:link" minOccurs="0" maxOccurs="unbounded">
+				</xsd:element>
+			</xsd:sequence>
+			<xsd:attribute name="name" type="xsd:token" use="required"></xsd:attribute>
+			<xsd:attributeGroup ref="nfv:deployTimeGroup"></xsd:attributeGroup>
+		</xsd:complexType>
+				
+	<!-- Each link has a unique @name inside an nffg ! -->
+		<xsd:key name="link_key">
+			<xsd:selector xpath="nfv:link"></xsd:selector>
+			<xsd:field xpath="@name"></xsd:field>
+		</xsd:key>
+
+	</xsd:element>
+
+	<xsd:element name="node">
+		<xsd:complexType>
+			<!-- the name is an ID cause is referenced from the ih -->
+			<xsd:attribute name="name" type="xsd:ID" use="required"></xsd:attribute>
+			<xsd:attribute name="vnft" type="xsd:token" use="required"></xsd:attribute>
+		</xsd:complexType>
+				
+	</xsd:element>
+
+	<xsd:element name="link">
+		<xsd:complexType>
+			<xsd:attribute name="name" type="xsd:token" use="required"></xsd:attribute>
+			<xsd:attribute name="src" type="xsd:IDREF" use="required">
+			</xsd:attribute>
+			<xsd:attribute name="dst" type="xsd:IDREF" use="required">		
+			</xsd:attribute>
+			<xsd:attribute name="throughput" use="optional">
+				<xsd:simpleType>
+		   			 <xsd:restriction base="xsd:double">
+		      			<xsd:minInclusive value="0"/>
+		    		</xsd:restriction>
+		    	</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attributeGroup ref="nfv:maxLGroup"></xsd:attributeGroup>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- Definition of other physical elements -->
+
+	<xsd:element name="in">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="nfv:host" minOccurs="1" maxOccurs="unbounded">
+				</xsd:element>
+				<xsd:element ref="nfv:connection" minOccurs="0"
+					maxOccurs="unbounded">
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+
+	<!-- Each host has a unique @name inside the in -->
+		<xsd:key name="host_key">
+			<xsd:selector xpath="nfv:host"></xsd:selector>
+			<xsd:field xpath="@name"></xsd:field>
+		</xsd:key>
+		
+		<!-- Each connection reference to two host -->
+		<xsd:keyref name="host_key_ref1" refer="nfv:host_key">
+			<xsd:selector xpath="nfv:connection"></xsd:selector>
+			<xsd:field xpath="@h1"></xsd:field>
+		</xsd:keyref>
+		
+		<xsd:keyref name="host_key_ref2" refer="nfv:host_key">
+			<xsd:selector xpath="nfv:connection"></xsd:selector>
+			<xsd:field xpath="@h2"></xsd:field>
+		</xsd:keyref>
+		
+	</xsd:element>
+
+	<xsd:element name="host">
+		<xsd:complexType>
+			<xsd:attribute name="name" type="xsd:token" use="required"></xsd:attribute>
+			<xsd:attributeGroup ref="nfv:maxVNFGroup"></xsd:attributeGroup>
+			<xsd:attributeGroup ref="nfv:memoryGroup"></xsd:attributeGroup>
+			<xsd:attributeGroup ref="nfv:diskGroup"></xsd:attributeGroup>
+			<!-- This attribute is a list of names of nodes -->
+			<xsd:attribute name="nodes" type="xsd:IDREFS" use="optional">			
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="connection">
+		<xsd:complexType>
+			<xsd:attribute name="h1" type="xsd:token" use="required"></xsd:attribute>
+			<xsd:attribute name="h2" type="xsd:token" use="required"></xsd:attribute>
+			<xsd:attribute name="throughput" use="optional">
+				<xsd:simpleType>
+		   			 <xsd:restriction base="xsd:double">
+		      			<xsd:minInclusive value="0"/>
+		    		</xsd:restriction>
+		    	</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attributeGroup ref="nfv:avglatencyGroup"></xsd:attributeGroup>
+		</xsd:complexType>
+	</xsd:element>
+
+</xsd:schema>
+
+<!-- This XML Schema file was developed by Matteo Arzani for the Assignment 
+	1 of the course Distributed Programming II 2017/2018 in Politechnic University 
+	of Turin. -->

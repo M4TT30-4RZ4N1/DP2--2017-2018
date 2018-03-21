@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." default="generate-artifacts" name="NFV-SOL2">
+	
+	<description>
+			Script for NFV Assignment 2 solution - Matteo Arzani 236462
+	</description>
+	
+	<!-- Define neo and lib properties -->
+	<property name="PORT" value="8080"/>
+	<property name="URL" value="http://localhost:${PORT}/Neo4JSimpleXML/webapi"/>
+	<property name="WADL" value="${URL}/application.wadl"/>
+	
+	<property name="shared.location" location="/opt/dp2/shared"/>
+	<property name="ext.lib.dir" location="${shared.location}/lib" />
+	
+	<property name="lab2.location" location="." />
+	<property name="gen.dir" location="${lab2.location}/gen-src" />
+		
+	<!-- Define the wjc task (WADL to Java) -->
+	<taskdef name="wjc" classname="org.jvnet.ws.wadl2java.WJCTask">
+		<classpath>
+			<fileset dir="${ext.lib.dir}" includes="*.jar" />
+		</classpath>
+	</taskdef>
+		
+
+	<!-- Define the Client artifacts generation target -->
+		<target name="generate-artifacts">
+			<mkdir dir="${gen.dir}" />
+		   	<echo message="Generating the artifacts..." />
+		   	<wjc description="${WADL}" package="it.polito.dp2.NFV.sol2"
+		       autoSchemaPackage="false" target="${gen.dir}">
+		     <customizations dir="${root.location}" includes="binding.xjc"/>
+		     <produces dir="${gen.dir}/it/polito/dp2/NFV/sol2" includes="*.java"/>
+		     <depends dir="${root.location}" includes="build.xml"/>
+		    </wjc>
+		</target>
+
+</project>

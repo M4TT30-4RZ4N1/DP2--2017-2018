@@ -1,0 +1,63 @@
+<!-- DTD for a Virtual Network System -->
+
+<!-- Dictionary: 
+				- in: infrastructure network
+				- nffg: network function forwarding graph
+				- catalog: provider catalog, contain the vnft
+				- vnft: virtual network functional type
+				- ih: infrastructure host  
+				 Measures:
+				 memory and disk : MB
+				 minT: Mbps
+				 maxL or Latency : ms 
+-->
+				
+<!ELEMENT virtualnetworkmanager (nffg | catalog | in)+ >
+
+<!ELEMENT nffg (node | link )*>
+<!ATTLIST nffg
+	name ID #REQUIRED
+	deployTime CDATA #REQUIRED >
+	
+<!ELEMENT node EMPTY >
+<!ATTLIST node
+	name ID #REQUIRED
+	vnft IDREF #REQUIRED>
+			
+<!ELEMENT  link EMPTY>
+<!ATTLIST link
+	name ID #REQUIRED
+	nodeSrc IDREF #REQUIRED
+	nodeDst IDREF #REQUIRED
+	minT CDATA "noInfo"
+	maxL CDATA "noInfo">
+
+<!ELEMENT catalog (vnft)+ >
+<!ELEMENT  vnft EMPTY>
+<!ATTLIST vnft
+	name ID #REQUIRED
+	type CDATA #REQUIRED
+	memory CDATA #REQUIRED
+	disk  CDATA #REQUIRED>
+
+<!ELEMENT in ( host | connection)*>
+	
+<!ELEMENT host EMPTY>
+<!ATTLIST host
+	name ID #REQUIRED
+	maxVNF CDATA #REQUIRED
+	memory CDATA #REQUIRED
+	disk  CDATA #REQUIRED
+	nodes IDREF #IMPLIED>
+	
+<!ELEMENT connection EMPTY>
+<!ATTLIST connection
+    h1 IDREF #REQUIRED
+    h2 IDREF #REQUIRED
+	minT CDATA #REQUIRED
+	maxL CDATA #REQUIRED>
+	
+	
+
+<!-- This DTD file was developed by Matteo Arzani for the Assignment 1
+	 of the course Distributed Programming II 2017/2018 in Politechnic University of Turin. -->

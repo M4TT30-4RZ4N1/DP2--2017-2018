@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+		
+</head>
+<body>
+
+<h1>Design</h1>
+
+<h3>Web Service - Part 1</h3>
+
+
+<table   bgcolor="#424242" border="0">
+<tbody>
+<tr>
+<td  bgcolor="#CEECF5">
+<p> <u>RESOURCES</u><br>
+<br>
+The XSD schema provide a representation of all the resources. <br>
+I tried to use the same names provided by Assignment 1 but each resource is preceded from a capital letter R that stands for Resource (in order to not have conflicts with other classes/interfaces of the it.polito.dp2.NFV). <br>
+Resources are organized as explained in the other document. I used GET, POST, PUT and DELETE HTTP methods.<br>
+Use GET and POST on resources that are collections. <br>
+Use GET, PUT and DELETE on resources that are single objects identified by an {id}.<br>
+I manage a different granularity of links' information to the detriment of a little redundancy:  <br>
+&emsp;-[Coarse] From a nffg there can be retrieved information about all links related to that nffg.  <br>
+&emsp;-[Fine] From a node there can be retrieved information about links (only the ones that have src equal to the node) <br>
+Service resources are identified by java classes that begins with "Resource..." where dots are the name of the resource. <br>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+<table   bgcolor="#424242" border="0">
+<tbody>
+<tr>
+<td  bgcolor="#CEECF5">
+<p><u>IMPLEMENTATION CHOISES</u><br>
+<br>
+The deployment is performed only if all nodes of the nffg can be deployed and there are no conflicts between nodes and between links, that means that the nffg is considered complete without errors. <br>
+The operation read on nffg is performed only on the nffgs that are completely deployed (and it's possible to retrieve a set of nffg deployed after a given dateTime). <br>
+An incomplete nffg can be deployed or canceled with a rollback (see rollbackSuite). <br>
+A node is added from the client only to a complete nffg if the allocation is possible.<br>
+In order to allocate a node is usually controlled the availability on a suggested host. <br>
+Both the host is specified or not the algorithm try to find a valid host. <br>
+The allocation's constraints are: <br>
+&emsp;- the number of allocated vnfts on that host must be less than  of his maxVnfts; <br>
+&emsp;- the amount of memory needed for the new node must be less to the total memory available on the host; <br>
+&emsp;- the amount of storage needed for the new node must be less to the total storage available on the host; <br>
+When a link is added if the override parameter is set to true the link is overrided otherwise an error message is returned cause the operation fail. <br>
+In case of override set to true i make a PUT otherwise i make a POST. <br>
+A link is duplicate if: <br>
+&emsp;- exist a link in the nffg with the same name; <br>
+(or) <br>
+&emsp;- exist a link in the nffg with same src and dst;
+<br>
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+<table   bgcolor="#424242" border="0">
+<tbody>
+<tr>
+<td  bgcolor="#CEECF5">
+<p><u>CHECK-SUITE</u><br>
+<br>
+I defined a set of methods called check-..., where dots represent the resource on which is performed a check operation. <br>
+Checks operations are performed on all resources in order to find errors on the format and to find duplicate and conflict issues <br>
+
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+<table   bgcolor="#424242" border="0">
+<tbody>
+<tr>
+<td  bgcolor="#CEECF5">
+<p><u>EXCEPTIONS-SUITE</u><br>
+<br>
+I defined a set of java classes that represents my exceptions. <br>
+I mapped for simplicity each base exception, for example "BadRequest" to a personal exception called My400Exception in order to let the code more readable and catch them during all the basic operations. <br>
+I've created also a client interceptor exception that is able to traduce the exception message error to the client in order to give a better user experience and knowledge about the errors. <br>
+In this way i can show the error and it can be easier to understand client side. <br>
+</p>
+
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+<table   bgcolor="#424242" border="0">
+<tbody>
+<tr>
+<td  bgcolor="#CEECF5">
+<p><u>ROLLBACK-SUITE</u><br>
+<br>
+I defined a set of methods called rollback-..., where dots represent the resource on which is performed a rollback operation. <br>
+For rollback i mean that is possible in case of error or also for a future implementation of the DELETE to remove the resource from the web service. <br>
+These operations are usefull on this actions: deploy Nffg, undeploy Nffg, add/remove node, add/remove link. <br>
+In case of an exception, for example during a POST or PUT http method, is better to do a rollback on the target resource, in this way i'm sure to remove a nffg/node/link from my DB in case of errors. <br>
+</p>
+
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+<table   bgcolor="#424242" border="0">
+<tbody>
+<tr>
+<td  bgcolor="#CEECF5">
+<p><u>HATEOS</u><br>
+<br>
+My service implement the HATEOS basic structure of webservices. I've created a class using the xsd schema that is called Reference and it acts like an hyperlink, my service in this way can be self-desribing and provide a better scalability cause i considerer the fact that in my system could be loaded a thousands of NF-FGs.
+
+</p>
+
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+<table   bgcolor="#424242" border="0">
+<tbody>
+<tr>
+<td  bgcolor="#CEECF5">
+<p><u>CONCURRENCY</u><br>
+<br>
+From the internal point of view of coding i've created a singleton NfvDeployer that will instantiate a single istance and contains all the maps used like a DataBase in order to save the information about the entire system.
+Concurrency is managed using CuncurrenHashMap in Java, a single ReadWriteLock and synchronized methods. <br>
+I've not created an external DB class as the examples shown in class, my DB made up of the different maps used to store all the Resources and neo4j info. <br>
+Each time i need to retrieve an information with a GET or i need to add something with a POST/PUT (on nffg root resource and sub resources and hosts)<br>
+the software enter in a critical section acquiring the lock if it possible, then perform all the necessary operations needed and then releases the lock.<br>
+The lock is released using the "finally" block (try-catch-finally), in this way in case of exceptions i'm sure to unlock, otherwise there could be a deadlock. <br>
+Another way to implement synchronization with locks could be use a Map of ReadWriteLocks and create one for each resource and subresource in order to implement the hierarchy locking paradigm, but i opted to a simplier solution. <br>
+</p>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+
+
+</p>
+
+<h3>Client 1 - Part 2</h3>
+
+
+<table   bgcolor="#424242" border="0">
+<tbody>
+<tr>
+<td  bgcolor="#F5F6CE">
+<p>
+I create a generic NfvClient that is able to perform the deployment of an nffg (creating a deployedNffg) and to get a deployed nffg from his name. <br>
+Starting from the Descriptors i create a complete Nffg ready to be deployed. <br>
+An NffgDescriptor contain a set of NodeDescriptor. A NodeDescriptor contain a set of LinkDescriptor.<br>
+These basic structures contains basic info, but not contain the identification data as names/id. <br>
+I used the RandomUtility  from java + information about the parent object to generate a name for each new Nffg, for each new Node and for each new Link. <br>
+I mapped each NodeDescriptor to the new name in order to find it when i'm inside a LinkDescriptor (in order to find src and dst names). <br>
+Another alternative was to assign Descriptor.toString() to a map in order to match it inside the LinkDescriptor (but i prefered the previous one). <br>
+The DeployedNffg can be returned only if all operations (add nodes and links) are performed without errors. <br>
+DeployedNffg has methods addNode and addLink in order to perform these operations. Only if it's complete from all resources described from the NffgDescriptor it can be deployed. <br>
+I've implemented a Client1XXXReader for each resource that is affected by the deployment of an nffg, add node or add link operation. <br>
+I use the NfvDeployer class generated from the WADL in order to traduce the data retrieved from the web service as a XML format to the equivalent class corresponding in the schema. <br>
+In the NfvReader i access to the Root element of my HATEOS web service, then i get all the subroots collections (hosts, catalog and nffgs). <br>
+For each sub-resource i pass the corresponding hyperlink using - URI.create(reference) - to the corresponding class reader.<br>
+In the corresponding reader i create a web resource like -WebResource = NfvDeployer.createClient().resource(resouceUri) - and from that i retrieve the equivalent class to be read. <br>
+This operation is done for each resource until i found a leaf node of my "resource tree". <br>  
+</p>
+
+
+</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Client 2 - Part 3</h3>
+
+<table   bgcolor="#424242" border="0">
+<tbody>
+<tr>
+<td  bgcolor="#F5F6CE">
+<p>
+The client 2 follow the basic implementation of all readers created in the developing phase of client 1.<br>
+</p>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+
+</html>

@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html>
+<head>
+		
+</head>
+<body>
+
+<h1>RESTful API</h1>
+
+<h3>(01) - Conceptual Structure of Resources</h3>
+<h4>(01 . A) - Hierarchical Structure</h4>
+
+<p> Basic URL of service: http://localhost:8080/NfvDeployer/rest</p>
+<br>
+<br>
+<p> 
+
+	/		<br>
+	&ensp;&ensp;|<br>
+	&ensp;&ensp;|<br>
+	&ensp;&ensp;|&mdash;&mdash;&mdash;/nffgs <br> 
+	&emsp;| &emsp; &emsp; &emsp;  |<br>
+	&emsp;| &emsp; &emsp; &emsp;    |&mdash;&mdash;&mdash;  /{nffg_id}<br>
+	&emsp;|&emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp; &emsp;|<br>
+	&emsp;|&emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp; &emsp;|&mdash;&mdash;&mdash; /nodes<br>
+	&emsp;|&emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp; &emsp;|&emsp; &emsp; &emsp; &emsp; |<br>
+	&emsp;|&emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp; &emsp;|&emsp; &emsp; &emsp; &emsp; | &mdash;&mdash;&mdash; /{node_id} <br>
+	&emsp;|&emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp; &emsp;|&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; |<br>
+	&emsp;|&emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp; &emsp;|&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  &emsp; | &mdash;&mdash;&mdash; /reachablehosts <br>
+	&emsp;|&emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp; &emsp;|&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  &emsp; | <br>
+	&emsp;|&emsp; &emsp; &emsp;  &emsp; &emsp; &emsp;&emsp; &emsp; |&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  &emsp; | &mdash;&mdash;&mdash; /links <br>
+	&emsp;|&emsp; &emsp; &emsp;  &emsp; &emsp; &emsp;&emsp; &emsp; |&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp; &emsp; |<br>
+	&emsp;|&emsp; &emsp; &emsp;  &emsp; &emsp; &emsp;&emsp; &emsp; |&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp; &emsp; | &mdash;&mdash;&mdash;/{link_id}<br>
+	&emsp;|&emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp; &emsp;|&mdash;&mdash;&mdash; /links<br>
+	&emsp;|&emsp; &emsp; &emsp;  &emsp; &emsp; &emsp;&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; | &mdash;&mdash;&mdash; /{link_id} <br>
+	&emsp;|&emsp; &emsp; &emsp; <br>
+	&emsp;|&emsp; &emsp; &emsp; <br>
+	&emsp;|&emsp; &emsp; &emsp; <br>
+ 	&ensp;&ensp;|&ensp;&ensp;&mdash;&mdash;&mdash;/catalog <br>
+	&emsp;| &emsp; &emsp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;|<br>
+	&emsp;| &emsp; &emsp;&ensp; &ensp;&ensp;&ensp;&ensp;&ensp; |&mdash;&mdash;&mdash; /{vnft_id}<br>
+	&emsp;| &emsp; &emsp; &emsp; <br>
+	&emsp;|&emsp; &emsp; &emsp; <br>
+	&emsp;|&emsp; &emsp; &emsp; <br>
+	&emsp;|&emsp; &emsp; &emsp; <br>
+ 	&ensp;&ensp;|&ensp;&ensp;&mdash;&mdash;&mdash;&mdash;/hosts <br> 
+	&emsp; &emsp; &emsp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;|<br>
+	&emsp; &emsp; &emsp;&ensp; &ensp;&ensp;&ensp;&ensp;&ensp; |&mdash;&mdash;&mdash; /{host_id}<br>
+	&emsp; &emsp; &emsp; &emsp;&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; |<br>
+	&emsp; &emsp; &emsp; &emsp;&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; |&mdash;&mdash;&mdash;/connections<br>
+
+	
+</p>
+
+<br>
+<p> <font size="4">
+	Here there are all the resources defined.<br>
+	Plural names are used for collections resources otherwise singular names are used for resources that are not collections. <br>
+	It is also indicated the hierarchy of the elements and the element that can be root is the entry point of the service (a global nfv resource implicit) cause i implemented a HATEOS web service where with the basic URL of service we retrieve the basic information with hyperlink to the main collections of subresources.<br>
+	Information related to vnfts, hosts and connections exist and READ-ONLY operation are allowed. <br>
+	On nffgs, single nffg, nodes, single node, links and  single link can be performed READ operations.<br>
+	An NFFG can be deployed with nodes and links, a node and a link can be added to an already deployed nffg. <br>
+	Delete operation of nffg(undeploy) and delete operations associated to node and link are not implemented. <br>
+	From an nffg there can be exploited the information about nodes and links. <br>
+	I manage a different granularity of links' information to the detriment of a little redundancy: <br>
+	&emsp;&emsp; -[Coarse] From a nffg there can be retrieved information about all links related to that nffg. <br>
+	&emsp;&emsp; -[Fine] From a node there can be retrieved information about links (only the ones that have src equal to the node) <br>
+	From a node can be accessed information about reachable hosts. <br>
+	
+</font>
+</p>
+<h4>(01 . B) - HTTP Methods </h4>
+<p> <font size="4">
+	The HTTP Methods used are: GET, POST, PUT and DELETE. <br>
+	Using [GET] it's possible to retrieve informations about the content of the entire nfv (vnfts,hosts,connections,nffgs,nodes,links as specified Assignment 1 and information about reachable hosts as specified in Assignment 2). <br>
+	Using [POST] it's possible to deploy an nffg, add a node or add a link. <br>
+	Using [PUT] it's possible to update a node or a link (override case). <br>
+	Using [DELETE] it's possible to undeploy a nffg, remove a node or remove a link (Not Implemented). <br>
+	These HTTP methods are specified in the (03) Table.
+	</font>
+</p>
+
+<h3>(02) - Designing Resources.</h3>
+<p> Basic URL of service: http://localhost:8080/NfvDeployer/rest</p>
+<table border="1">
+  <tr bgcolor="#A4A4A4">
+    <th>URLs</th>
+    <th>XML Repr</th>
+    <th>Meaning</th>
+  </tr>
+    <tr bgcolor="#F2F2F2">
+    <td>/</td>
+    <td>RNfv</td>
+    <td>entry point of HATEOS web service</td>
+  </tr>
+  <tr bgcolor="#F2F2F2">
+    <td>/nffgs</td>
+    <td>RNffgs</td>
+    <td>set of all nffgs</td>
+  </tr>
+  <tr bgcolor="#D8D8D8">
+    <td>/nffgs/{id}</td>
+    <td>RNffg</td>
+    <td>single nffg</td>
+  </tr>
+  <tr bgcolor="#F2F2F2">
+    <td>/nffgs/{id}/nodes</td>
+    <td>RNodes</td>
+    <td>set of all nodes of a specific nffg</td>
+  </tr>
+  <tr bgcolor="#D8D8D8">
+     <td>/nffgs/{id}/nodes/{id}</td>
+    <td>RNode</td>
+    <td>single node of a specific nffg</td>
+  </tr>
+   <tr bgcolor="#F2F2F2">
+     <td>/nffgs/{id}/nodes/{id}/reachablehosts</td>
+    <td>RHosts</td>
+    <td>hosts reachable of a specific node </td>
+  </tr>
+    <tr bgcolor="#D8D8D8">
+     <td>/nffgs/{id}/nodes/{id}/links</td>
+    <td>RLinks</td>
+    <td>links that have the node as src</td>
+  </tr>
+      <tr bgcolor="#F2F2F2">
+     <td>/nffgs/{id}/nodes/{id}/links/{id}</td>
+    <td>RLinks</td>
+    <td>single link of a specific node</td>
+  </tr>
+  <tr bgcolor="#D8D8D8">
+	<td>nffgs/{id}/links</td>
+    <td>RLinks</td>
+    <td>set of all links of a specific nffg</td>
+  </tr>
+  <tr bgcolor="#F2F2F2">
+    <td>/nffgs/{id}/links/{id}</td>
+    <td>RLink</td>
+    <td>single link of a specific nffg</td>
+  </tr>
+    <tr bgcolor="#D8D8D8">
+	<td>/catalog</td>
+    <td>RVnfts</td>
+    <td>set of all vnfts</td>
+  </tr>
+  <tr bgcolor="#F2F2F2">
+    <td>/vnfts/{id}</td>
+    <td>RVnft</td>
+    <td>single vnft</td>
+  </tr>
+  <tr bgcolor="#D8D8D8">
+	<td>/hosts</td>
+    <td>RHosts</td>
+    <td>set of all hosts</td>
+  </tr>
+  <tr bgcolor="#F2F2F2">
+    <td>/hosts/{id}</td>
+    <td>RHost</td>
+    <td>single host</td>
+  </tr>
+    <tr bgcolor="#D8D8D8">
+    <td>/hosts/{id}/connections</td>
+    <td>RHost</td>
+    <td>connections of a specific host</td>
+  </tr>
+
+</table>
+
+
+
+<h3>(03) - Designing Operations.</h3>
+
+<p> Each colored block is a sequence of same method on the same resource but with a different response body. <br>
+</p>
+<br>
+
+  <br>
+  Table of nffgs resource and sub-resources.
+  <br>
+<table border="1">
+  <tr bgcolor="#F2F2F2">
+    <th>Resource</th>
+    <th>Method</th>
+    <th>Req. Body XML</th>
+    <th>Query Param.</th>
+    <th>Status</th>
+    <th>Resp. Body XML</th>
+    <th>Meaning</th>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200- OK</td>
+    <td>RNfv</td>
+    <td>Documentation of web service.</td>
+  </tr>
+    <tr bgcolor="#81BEF7">
+    <td>/</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>Cannot access to the web service.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/nffgs</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>string date : format(YYYYMMDD)</td>
+    <td>200 - OK</td>
+    <td>RNffgs</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+   <tr bgcolor="#81BEF7">
+    <td>/nffgs</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>string date : format(YYYYMMDD)</td>
+    <td>400 - Bad Request</td>
+    <td>-</td>
+    <td>Date not correct.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/nffgs</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>string date : format(YYYYMMDD)</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+  <tr bgcolor="#9FF781">
+    <td>/nffgs</td>
+    <td>POST</td>
+    <td>RNffg</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RNffg</td>
+    <td>Correct deployment of nffg on the web service.</td>
+  </tr>
+  <tr bgcolor="#9FF781">
+    <td>/nffgs</td>
+    <td>POST</td>
+    <td>RNffg</td>
+    <td>-</td>
+    <td>400 - Bad Request</td>
+    <td>-</td>
+    <td>Server cannot create the resource (not possible to allocate nffg).</td>
+  </tr>
+  <tr bgcolor="#9FF781">
+    <td>/nffgs</td>
+    <td>POST</td>
+    <td>RNffg</td>
+    <td>-</td>
+    <td>500 - Internal server error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to the Neo4J service.</td>
+  </tr>
+    <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>string date : format(YYYYMMDD)</td>
+    <td>200 - OK</td>
+    <td>RNffgs</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+   <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>string date : format(YYYYMMDD)</td>
+    <td>404 - Not found</td>
+    <td>-</td>
+    <td>One or more of nggs are not found.</td>
+  </tr>
+    <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>string date : format(YYYYMMDD)</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+  
+  <tr bgcolor="#F78181">
+    <td>/nffgs/{id}</td>
+    <td>DELETE</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RNffg</td>
+    <td>Data correctly deleted.</td>
+  </tr>
+  <tr bgcolor="#F78181">
+    <td>/nffgs/{id}</td>
+    <td>DELETE</td>
+    <td>-</td>
+    <td>-</td>
+    <td>400 - Bad Request</td>
+    <td>-</td>
+    <td>The operation cannot be performed.</td>
+  </tr>
+  <tr bgcolor="#F78181">
+    <td>/nffgs/{id}</td>
+    <td>DELETE</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Service Unavailable</td>
+    <td>-</td>
+    <td>There are some problems connecting to the webservice.</td>
+  </tr> 
+   <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RNodes</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+     <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>404 - Not found</td>
+    <td>-</td>
+    <td>One or more of nodes are not found.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+    <tr bgcolor="#9FF781">
+    <td>/nffgs/{id}/nodes</td>
+    <td>POST</td>
+    <td>RNode</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RNode</td>
+    <td>Correct deployment of node on the web service.</td>
+  </tr>
+  <tr bgcolor="#9FF781">
+    <td>/nffgs/{id}/nodes</td>
+    <td>POST</td>
+    <td>RNode</td>
+    <td>-</td>
+    <td>400 - Bad Request</td>
+    <td>-</td>
+    <td>Server cannot create the resource (not possible to allocate node).</td>
+  </tr>
+  <tr bgcolor="#9FF781">
+    <td>/nffgs/{id}/nodes</td>
+    <td>POST</td>
+    <td>RNode</td>
+    <td>-</td>
+    <td>500 - Internal server error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to the web service.</td>
+  </tr>
+    <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RNode</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+     <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>404 - Not found</td>
+    <td>-</td>
+    <td>The node is not found.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+   <tr bgcolor="#FAAC58">
+    <td>/nffgs/{id}/nodes/{id}</td>
+    <td>PUT</td>
+    <td>RNode</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RNode</td>
+    <td>Correct update of node.</td>
+  </tr>
+   <tr bgcolor="#FAAC58">
+    <td>/nffgs/{id}/nodes/{id}</td>
+    <td>PUT</td>
+    <td>RNode</td>
+    <td>-</td>
+    <td>400 - Bad Request </td>
+    <td>-</td>
+    <td>Bad request.</td>
+  </tr>
+  <tr bgcolor="#FAAC58">
+    <td>/nffgs/{id}/nodes/{id}</td>
+    <td>PUT</td>
+    <td>RNode</td>
+    <td>-</td>
+    <td>500 - Internal server error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to the web service.</td>
+  </tr>
+    <tr bgcolor="#F78181">
+    <td>/nffgs/{id}/nodes/{id}</td>
+    <td>DELETE</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RNode</td>
+    <td>Data correctly deleted.</td>
+  </tr>
+  <tr bgcolor="#F78181">
+    <td>/nffgs/{id}/nodes/{id}</td>
+    <td>DELETE</td>
+    <td>-</td>
+    <td>-</td>
+    <td>400 - Bad Request</td>
+    <td>-</td>
+    <td>The operation cannot be performed.</td>
+  </tr>
+  <tr bgcolor="#F78181">
+    <td>/nffgs/{id}/nodes/{id}</td>
+    <td>DELETE</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Service Unavailable</td>
+    <td>-</td>
+    <td>There are some problems connecting to the webservice.</td>
+  </tr> 
+    <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/links</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RLinks</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+ 
+     <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/links</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>404 - Not found</td>
+    <td>-</td>
+    <td>One or more of links are not found.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/links</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+    <tr bgcolor="#9FF781">
+    <td>/nffgs/{id}/links</td>
+    <td>POST</td>
+    <td>RLink</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RLink</td>
+    <td>Correct deployment of link on the web service.</td>
+  </tr>
+  <tr bgcolor="#9FF781">
+    <td>/nffgs/{id}/links</td>
+    <td>POST</td>
+    <td>RLink</td>
+    <td>-</td>
+    <td>400 - Bad Request</td>
+    <td>-</td>
+    <td>Server cannot create the resource (not possible to add link).</td>
+  </tr>
+  <tr bgcolor="#9FF781">
+    <td>/nffgs/{id}/links</td>
+    <td>POST</td>
+    <td>RLink</td>
+    <td>-</td>
+    <td>500 - Internal server error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to the web service.</td>
+  </tr>
+    <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/links/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RLink</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+     <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/links/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>404 - Not found</td>
+    <td>-</td>
+    <td>The link is not found.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/links/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+    <tr bgcolor="#FAAC58">
+    <td>/nffgs/{id}/links/{id}</td>
+    <td>PUT</td>
+    <td>RLink</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RLink</td>
+    <td>Correct update of link.</td>
+  </tr>
+  <tr bgcolor="#FAAC58">
+    <td>/nffgs/{id}/links/{id}</td>
+    <td>PUT</td>
+    <td>RLink</td>
+    <td>-</td>
+    <td>400 - Bad Request</td>
+    <td>-</td>
+    <td>Server cannot create the resource (not possible to update link).</td>
+  </tr>
+  <tr bgcolor="#FAAC58">
+    <td>/nffgs/{id}/links/{id}</td>
+    <td>PUT</td>
+    <td>RLink</td>
+    <td>-</td>
+    <td>500 - Internal server error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to the web service.</td>
+  </tr>
+    <tr bgcolor="#F78181">
+    <td>/nffgs/{id}/links/{id}</td>
+    <td>DELETE</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RLink</td>
+    <td>Data correctly deleted.</td>
+  </tr>
+  <tr bgcolor="#F78181">
+    <td>/nffgs/{id}/links/{id}</td>
+    <td>DELETE</td>
+    <td>-</td>
+    <td>-</td>
+    <td>400 - Bad Request</td>
+    <td>-</td>
+    <td>The operation cannot be performed.</td>
+  </tr>
+  <tr bgcolor="#F78181">
+    <td>/nffgs/{id}/links/{id}</td>
+    <td>DELETE</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Service Unavailable</td>
+    <td>-</td>
+    <td>There are some problems connecting to the webservice.</td>
+  </tr> 
+    <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes/{id}/links</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RLinks</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+     <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes/{id}/links</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>404 - Not found</td>
+    <td>-</td>
+    <td>One or more of links are not found.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes/{id}/links</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+    <tr bgcolor="#9FF781">
+    <td>/nffgs/{id}/nodes/{id}/links</td>
+    <td>POST</td>
+    <td>RLink</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RLink</td>
+    <td>Correct deployment of link on the web service.</td>
+  </tr>
+  <tr bgcolor="#9FF781">
+    <td>/nffgs/{id}/nodes/{id}/links</td>
+    <td>POST</td>
+    <td>RLink</td>
+    <td>-</td>
+    <td>400 - Bad Request</td>
+    <td>-</td>
+    <td>Server cannot create the resource (not possible to add link).</td>
+  </tr>
+  <tr bgcolor="#9FF781">
+    <td>/nffgs/{id}/nodes/{id}/links</td>
+    <td>POST</td>
+    <td>RLink</td>
+    <td>-</td>
+    <td>500 - Internal server error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to the web service.</td>
+  </tr>
+     <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes/{id}/links/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RLink</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+     <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes/{id}/links/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>404 - Not found</td>
+    <td>-</td>
+    <td>The link is not found.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes/{id}/links/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+    <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/links/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+    <tr bgcolor="#FAAC58">
+    <td>/nffgs/{id}/nodes/{id}/links/{id}</td>
+    <td>PUT</td>
+    <td>RLink</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RLink</td>
+    <td>Correct update of link.</td>
+  </tr>
+  <tr bgcolor="#FAAC58">
+    <td>/nffgs/{id}/nodes/{id}/links/{id}</td>
+    <td>PUT</td>
+    <td>RLink</td>
+    <td>-</td>
+    <td>400 - Bad Request</td>
+    <td>-</td>
+    <td>Server cannot create the resource (not possible to update link).</td>
+  </tr>
+  <tr bgcolor="#FAAC58">
+    <td>/nffgs/{id}/nodes/{id}/links/{id}</td>
+    <td>PUT</td>
+    <td>RLink</td>
+    <td>-</td>
+    <td>500 - Internal server error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to the web service.</td>
+  </tr>
+    <tr bgcolor="#F78181">
+    <td>/nffgs/{id}/nodes/{id}/links/{id}</td>
+    <td>DELETE</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RLink</td>
+    <td>Data correctly deleted.</td>
+  </tr>
+  <tr bgcolor="#F78181">
+    <td>/nffgs/{id}/nodes/{id}/links/{id}</td>
+    <td>DELETE</td>
+    <td>-</td>
+    <td>-</td>
+    <td>400 - Bad Request</td>
+    <td>-</td>
+    <td>The operation cannot be performed.</td>
+  </tr>
+  <tr bgcolor="#F78181">
+    <td>/nffgs/{id}/nodes/{id}/links/{id}</td>
+    <td>DELETE</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Service Unavailable</td>
+    <td>-</td>
+    <td>There are some problems connecting to the webservice.</td>
+  </tr> 
+      <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes/{id}/reachablehosts</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RHosts</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+    <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes/{id}/reachablehosts</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>404 - Not found</td>
+    <td>-</td>
+    <td>One or more of reachable hosts are not found.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/nffgs/{id}/nodes/{id}/reachablehosts</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+  
+  </table>
+  
+  <br>
+  <br>
+  Table of catalog resource and sub-resources.
+  <br>
+  
+  <table border="1">
+  
+   <tr bgcolor="#F2F2F2">
+    <th>Resource</th>
+    <th>Method</th>
+    <th>Req. Body XML</th>
+    <th>Query Param.</th>
+    <th>Status</th>
+    <th>Resp. Body XML</th>
+    <th>Meaning</th>
+  </tr>
+      <tr bgcolor="#81BEF7">
+    <td>/vnfts</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RVnfts</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+     <tr bgcolor="#81BEF7">
+    <td>/vnfts</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>404 - Not found</td>
+    <td>-</td>
+    <td>One or more of reachable hosts are not found.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/vnfts</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+      <tr bgcolor="#81BEF7">
+    <td>/vnfts/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RVnft</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+     <tr bgcolor="#81BEF7">
+    <td>/vnfts/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>404 - Not found</td>
+    <td>-</td>
+    <td>One or more of reachable hosts are not found.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/vnfts/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+ 
+</table>
+
+<br>
+  <br>
+  Table of hosts resource and sub-resources.
+  <br>
+
+<table border="1">
+	 <tr bgcolor="#F2F2F2">
+    <th>Resource</th>
+    <th>Method</th>
+    <th>Req. Body XML</th>
+    <th>Query Param.</th>
+    <th>Status</th>
+    <th>Resp. Body XML</th>
+    <th>Meaning</th>
+  </tr>
+    <tr bgcolor="#81BEF7">
+    <td>/hosts</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RHosts</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+     <tr bgcolor="#81BEF7">
+    <td>/hosts</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>404 - Not found</td>
+    <td>-</td>
+    <td>One or more of reachable hosts are not found.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/hosts</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+      <tr bgcolor="#81BEF7">
+    <td>/hosts/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RHost</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+     <tr bgcolor="#81BEF7">
+    <td>/hosts/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>404 - Not found</td>
+    <td>-</td>
+    <td>One or more of reachable hosts are not found.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/hosts/{id}</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+        <tr bgcolor="#81BEF7">
+    <td>/hosts/{id}/connections</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>200 - OK</td>
+    <td>RConnections</td>
+    <td>Data correctly retrieved.</td>
+  </tr>
+     <tr bgcolor="#81BEF7">
+    <td>/hosts/{id}/connections</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>404 - Not found</td>
+    <td>-</td>
+    <td>One or more of reachable hosts are not found.</td>
+  </tr>
+  <tr bgcolor="#81BEF7">
+    <td>/hosts/{id}/connections</td>
+    <td>GET</td>
+    <td>-</td>
+    <td>-</td>
+    <td>500 - Internal service error.</td>
+    <td>-</td>
+    <td>There are some problems connecting to web service.</td>
+  </tr>
+
+</table>
+
+</body>
+</html>
